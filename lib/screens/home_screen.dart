@@ -12,6 +12,7 @@ import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_widget.dart';
 import 'achievements_screen.dart';
 import 'attraction_detail_screen.dart';
+import 'best_time_advisor_screen.dart';
 import 'budget_calculator_screen.dart';
 import 'currency_converter_screen.dart';
 import 'etiquette_guide_screen.dart';
@@ -21,9 +22,11 @@ import 'festival_calendar_screen.dart';
 import 'food_dictionary_screen.dart';
 import 'golden_hour_calculator_screen.dart';
 import 'info_screen.dart';
+import 'itinerary_generator_screen.dart';
 import 'map_screen.dart';
 import 'phrasebook_screen.dart';
 import 'premium_screen.dart';
+import 'route_optimizer_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'stats_dashboard_screen.dart';
@@ -445,6 +448,61 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const FestivalCalendarScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Smart Features section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'SMART FEATURES',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.auto_awesome, color: AppConstants.deepOceanBlue),
+                title: const Text('AI Itinerary Generator'),
+                subtitle: const Text('Create personalized trips'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ItineraryGeneratorScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.route, color: AppConstants.tropicalGreen),
+                title: const Text('Route Optimizer'),
+                subtitle: const Text('Optimize your route'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RouteOptimizerScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.calendar_month, color: AppConstants.sunsetOrange),
+                title: const Text('Best Time to Visit'),
+                subtitle: const Text('Weather & crowd analysis'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BestTimeAdvisorScreen(),
                     ),
                   );
                 },
