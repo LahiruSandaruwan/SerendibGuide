@@ -11,13 +11,18 @@ import '../widgets/ad_banner_widget.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_widget.dart';
 import 'attraction_detail_screen.dart';
+import 'budget_calculator_screen.dart';
+import 'currency_converter_screen.dart';
+import 'expense_tracker_screen.dart';
 import 'favorites_screen.dart';
+import 'golden_hour_calculator_screen.dart';
 import 'info_screen.dart';
 import 'map_screen.dart';
 import 'premium_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'trip_planner_screen.dart';
+import 'tuktuk_fare_estimator_screen.dart';
 
 /// Home screen with category filters and attraction list
 class HomeScreen extends StatefulWidget {
@@ -240,6 +245,89 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const InfoScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Tools section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'TOOLS',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.calculate, color: AppConstants.deepOceanBlue),
+                title: const Text('Budget Calculator'),
+                subtitle: const Text('Estimate trip costs'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BudgetCalculatorScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.receipt_long, color: AppConstants.tropicalGreen),
+                title: const Text('Expense Tracker'),
+                subtitle: const Text('Track your spending'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ExpenseTrackerScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.currency_exchange, color: AppConstants.sunsetOrange),
+                title: const Text('Currency Converter'),
+                subtitle: const Text('LKR to 20+ currencies'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CurrencyConverterScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.electric_rickshaw, color: AppConstants.sunsetOrange),
+                title: const Text('Tuk-Tuk Fare Estimator'),
+                subtitle: const Text('Fair price calculator'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TukTukFareEstimatorScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.wb_sunny, color: AppConstants.sunsetOrange),
+                title: const Text('Golden Hour Calculator'),
+                subtitle: const Text('Best photo times'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GoldenHourCalculatorScreen(),
                     ),
                   );
                 },

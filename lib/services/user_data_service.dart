@@ -329,6 +329,116 @@ class UserDataService {
     }
   }
 
+  // ==================== EXPENSES OPERATIONS ====================
+
+  /// Initialize expenses table if it doesn't exist
+  Future<void> _ensureExpensesTable() async {
+    final Database db = await database;
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        category TEXT NOT NULL,
+        amount REAL NOT NULL,
+        currency TEXT NOT NULL,
+        description TEXT NOT NULL,
+        date TEXT NOT NULL
+      )
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_expense_date ON expenses(date DESC)
+    ''');
+  }
+
+  /// Add expense
+  Future<int> addExpense(String category, double amount, String currency, String description, DateTime date) async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      final int id = await db.insert('expenses', {
+        'category': category,
+        'amount': amount,
+        'currency': currency,
+        'description': description,
+        'date': date.toIso8601String(),
+      });
+      print('✓ Added expense: $description (ID: $id)');
+      return id;
+    } catch (e) {
+      print('✗ Error adding expense: $e');
+      rethrow;
+    }
+  }
+
+  /// Get all expenses
+  Future<List<Map<String, dynamic>>> getExpenses() async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      return await db.query('expenses', orderBy: 'date DESC');
+    } catch (e) {
+      print('✗ Error fetching expenses: $e');
+      return [];
+    }
+  }
+
+  /// Delete expense
+  Future<void> deleteExpense(int id) async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
+      print('✓ Deleted expense $id');
+    } catch (e) {
+      print('✗ Error deleting expense: $e');
+    }
+  }
+
+  /// Get expenses by date range
+  Future<List<Map<String, dynamic>>> getExpensesByDateRange(DateTime start, DateTime end) async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      return await db.query(
+        'expenses',
+        where: 'date BETWEEN ? AND ?',
+        whereArgs: [start.toIso8601String(), end.toIso8601String()],
+        orderBy: 'date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching expenses by date: $e');
+      return [];
+    }
+  }
+
+  /// Get total expenses by category
+  Future<Map<String, double>> getExpensesByCategory() async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT category, SUM(amount) as total FROM expenses GROUP BY category',
+      );
+      return Map.fromEntries(
+        result.map((row) => MapEntry(row['category'] as String, row['total'] as double)),
+      );
+    } catch (e) {
+      print('✗ Error getting expenses by category: $e');
+      return {};
+    }
+  }
+
+  /// Clear all expenses
+  Future<void> clearAllExpenses() async {
+    try {
+      await _ensureExpensesTable();
+      final Database db = await database;
+      await db.delete('expenses');
+      print('✓ Cleared all expenses');
+    } catch (e) {
+      print('✗ Error clearing expenses: $e');
+    }
+  }
+
   // ==================== UTILITY OPERATIONS ====================
 
   /// Get user data database size
@@ -353,6 +463,7 @@ class UserDataService {
       await db.delete('favorites');
       await db.delete('trips');
       await db.delete('app_settings');
+      await db.delete('expenses');
       print('✓ Reset all user data');
     } catch (e) {
       print('✗ Error resetting data: $e');
