@@ -1,0 +1,146 @@
+{
+  "train_routes": [
+    {
+      "id": 1,
+      "name": "Colombo to Kandy",
+      "from": "Colombo Fort",
+      "to": "Kandy",
+      "distance_km": 121,
+      "duration": "2.5-3 hours",
+      "frequency": "Every 30-60 minutes",
+      "classes": ["1st Class AC", "2nd Class", "3rd Class"],
+      "prices": {
+        "1st_class": 500,
+        "2nd_class": 300,
+        "3rd_class": 150
+      },
+      "highlights": [
+        "Beautiful hill country views",
+        "Tea plantations",
+        "Multiple waterfalls",
+        "Cool mountain air"
+      ],
+      "tips": [
+        "Book 2nd class in advance (limited seats)",
+        "Morning departures less crowded",
+        "Right side has better views"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Kandy to Ella",
+      "from": "Kandy",
+      "to": "Ella",
+      "distance_km": 144,
+      "duration": "6-7 hours",
+      "frequency": "3-4 trains daily",
+      "classes": ["1st Class AC", "2nd Class", "3rd Class"],
+      "prices": {
+        "1st_class": 700,
+        "2nd_class": 400,
+        "3rd_class": 200
+      },
+      "highlights": [
+        "One of world's most scenic train journeys",
+        "Nine Arch Bridge",
+        "Tea plantations everywhere",
+        "Mountain valleys",
+        "Ravana Falls view"
+      ],
+      "tips": [
+        "MUST BOOK 2-3 DAYS IN ADVANCE!",
+        "Left side has best views Kandy→Ella",
+        "Stand near open doors for photos",
+        "Bring snacks and water",
+        "Peak season (Dec-Mar) books out quickly"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Colombo to Galle",
+      "from": "Colombo Fort",
+      "to": "Galle",
+      "distance_km": 119,
+      "duration": "2-2.5 hours",
+      "frequency": "Every hour",
+      "classes": ["1st Class AC", "2nd Class", "3rd Class"],
+      "prices": {
+        "1st_class": 450,
+        "2nd_class": 250,
+        "3rd_class": 100
+      },
+      "highlights": [
+        "Coastal route",
+        "Ocean views",
+        "Beach towns",
+        "Galle Fort"
+      ],
+      "tips": [
+        "Right side for ocean views",
+        "Express trains are faster",
+        "Stop at Hikkaduwa for beaches"
+      ]
+    }
+  ],
+  "bus_routes": [
+    {
+      "id": 1,
+      "name": "Colombo to Kandy (Express)",
+      "from": "Bastian Mawatha (Pettah)",
+      "to": "Kandy Bus Stand",
+      "distance_km": 115,
+      "duration": "3-3.5 hours",
+      "frequency": "Every 15-30 minutes",
+      "types": ["AC Express", "Semi-Luxury", "Normal"],
+      "prices": {
+        "ac_express": 300,
+        "semi_luxury": 200,
+        "normal": 150
+      },
+      "tips": [
+        "AC buses more comfortable",
+        "Can be crowded on weekends",
+        "Buy tickets at counter"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Kandy to Ella",
+      "from": "Kandy Clock Tower Bus Stand",
+      "to": "Ella Bus Station",
+      "distance_km": 100,
+      "duration": "4-5 hours",
+      "frequency": "Every 1-2 hours",
+      "types": ["Express", "Normal"],
+      "prices": {
+        "express": 400,
+        "normal": 250
+      },
+      "tips": [
+        "Windy mountain roads",
+        "Take motion sickness medicine if needed",
+        "Beautiful views but less comfortable than train"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Colombo to Galle",
+      "from": "Maharagama Bus Stand",
+      "to": "Galle Bus Stand",
+      "distance_km": 116,
+      "duration": "2-2.5 hours",
+      "frequency": "Every 20-30 minutes",
+      "types": ["AC Express", "Express", "Normal"],
+      "prices": {
+        "ac_express": 350,
+        "express": 200,
+        "normal": 150
+      },
+      "tips": [
+        "Coastal route via Galle Road",
+        "Can stop at any beach town",
+        "Express buses don't stop often"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "emergency_contacts": [
+    {
+      "category": "Emergency Services",
+      "contacts": [
+        {
+          "name": "Tourist Police",
+          "phone": "1912",
+          "description": "24/7 tourist assistance and emergencies",
+          "icon": "local_police"
+        },
+        {
+          "name": "Ambulance",
+          "phone": "1990",
+          "description": "Medical emergencies",
+          "icon": "local_hospital"
+        },
+        {
+          "name": "Fire & Rescue",
+          "phone": "110",
+          "description": "Fire emergencies",
+          "icon": "local_fire_department"
+        },
+        {
+          "name": "Police Emergency",
+          "phone": "119",
+          "description": "General police emergencies",
+          "icon": "shield"
+        }
+      ]
+    },
+    {
+      "category": "Hospitals (Colombo)",
+      "contacts": [
+        {
+          "name": "Asiri Hospital",
+          "phone": "+94 11 452 4400",
+          "address": "181 Kirula Rd, Colombo 05",
+          "description": "Leading private hospital"
+        },
+        {
+          "name": "Nawaloka Hospital",
+          "phone": "+94 11 554 4444",
+          "address": "23 Sri Saugathvodaya Mawatha, Colombo 02",
+          "description": "24-hour emergency services"
+        },
+        {
+          "name": "Durdans Hospital",
+          "phone": "+94 11 257 4444",
+          "address": "3 Alfred Place, Colombo 03",
+          "description": "Established private hospital"
+        }
+      ]
+    },
+    {
+      "category": "Embassies (Colombo)",
+      "contacts": [
+        {
+          "name": "US Embassy",
+          "phone": "+94 11 249 8500",
+          "address": "210 Galle Road, Colombo 03",
+          "email": "colomboacs@state.gov"
+        },
+        {
+          "name": "UK High Commission",
+          "phone": "+94 11 539 0639",
+          "address": "389 Bauddhaloka Mawatha, Colombo 07",
+          "email": "britishhighcommission.colombo@fcdo.gov.uk"
+        },
+        {
+          "name": "Indian High Commission",
+          "phone": "+94 11 242 1605",
+          "address": "36-38 Galle Road, Colombo 03",
+          "email": "hoc.colombo@mea.gov.in"
+        },
+        {
+          "name": "Australian High Commission",
+          "phone": "+94 11 530 3300",
+          "address": "21 Gregory's Road, Colombo 07",
+          "email": "ahc.colombo@dfat.gov.au"
+        },
+        {
+          "name": "Canadian High Commission",
+          "phone": "+94 11 532 6232",
+          "address": "33A Fifth Lane, Colombo 03",
+          "email": "clmbo@international.gc.ca"
+        }
+      ]
+    }
+  ],
+  "travel_tips": [
+    {
+      "category": "Currency & Money",
+      "tips": [
+        {
+          "title": "Local Currency",
+          "content": "Sri Lankan Rupee (LKR). Exchange rate ~Rs 300-350 per USD (varies)."
+        },
+        {
+          "title": "ATMs",
+          "content": "Widely available in cities and towns. Major banks: Commercial Bank, HNB, Sampath."
+        },
+        {
+          "title": "Credit Cards",
+          "content": "Accepted at hotels, restaurants, and shops in tourist areas. Visa and Mastercard most common."
+        },
+        {
+          "title": "Cash vs Card",
+          "content": "Carry cash for small vendors, tuk-tuks, and rural areas. Cards work in urban centers."
+        },
+        {
+          "title": "Tipping",
+          "content": "10% at restaurants, round up for tuk-tuks, Rs 100-500 for guides/porters."
+        }
+      ]
+    },
+    {
+      "category": "Best Time to Visit",
+      "tips": [
+        {
+          "title": "West & South Coast",
+          "content": "December to March (dry season). Best for beaches and hill country."
+        },
+        {
+          "title": "East Coast",
+          "content": "April to September (dry season). Arugam Bay surfing season May-September."
+        },
+        {
+          "title": "Hill Country",
+          "content": "December to April for clear skies. Can visit year-round but expect rain other months."
+        },
+        {
+          "title": "Wildlife Safaris",
+          "content": "February to July (dry season). Animals gather around waterholes."
+        },
+        {
+          "title": "Cultural Triangle",
+          "content": "Year-round, but November to April is most comfortable (less rain)."
+        }
+      ]
+    },
+    {
+      "category": "SIM Cards & Internet",
+      "tips": [
+        {
+          "title": "Tourist SIM Cards",
+          "content": "Available at airport and mobile shops. Main providers: Dialog, Mobitel, Airtel."
+        },
+        {
+          "title": "Pricing",
+          "content": "Tourist packages Rs 1,000-2,000 with data (10-50GB) valid 30 days."
+        },
+        {
+          "title": "Coverage",
+          "content": "Good 4G coverage in cities and towns. 3G in rural areas. Some remote spots have no signal."
+        },
+        {
+          "title": "WiFi",
+          "content": "Most hotels, guesthouses, and cafes offer free WiFi."
+        }
+      ]
+    },
+    {
+      "category": "Visa Requirements",
+      "tips": [
+        {
+          "title": "ETA (Electronic Travel Authorization)",
+          "content": "Required for most nationalities. Apply online at eta.gov.lk before arrival."
+        },
+        {
+          "title": "Cost",
+          "content": "Approximately $50 USD for 30-day tourist visa."
+        },
+        {
+          "title": "Duration",
+          "content": "30 days (extendable to 90 days through Department of Immigration)."
+        },
+        {
+          "title": "Processing",
+          "content": "Usually approved within 24-48 hours. Apply at least 3 days before travel."
+        }
+      ]
+    },
+    {
+      "category": "Safety",
+      "tips": [
+        {
+          "title": "General Safety",
+          "content": "Sri Lanka is generally safe for tourists. Use common sense and stay aware."
+        },
+        {
+          "title": "Scams",
+          "content": "Beware of tuk-tuk overcharging, fake gems, and pushy touts. Agree on prices beforehand."
+        },
+        {
+          "title": "Beach Safety",
+          "content": "Strong currents on some beaches. Swim only where locals swim. Follow warning flags."
+        },
+        {
+          "title": "Wildlife",
+          "content": "Don't approach wild elephants. Keep 30m distance. Never feed monkeys."
+        },
+        {
+          "title": "Health",
+          "content": "Drink bottled water. Use mosquito repellent (dengue prevention). Carry basic first aid."
+        }
+      ]
+    }
+  ],
+  "cultural_etiquette": [
+    {
+      "category": "Temple Etiquette",
+      "rules": [
+        {
+          "title": "Remove Shoes",
+          "content": "Always remove footwear before entering temples or homes."
+        },
+        {
+          "title": "Dress Modestly",
+          "content": "Cover shoulders and knees. Some temples provide sarongs. White clothing preferred at some Buddhist temples."
+        },
+        {
+          "title": "No Photos",
+          "content": "Don't photograph inside shrine rooms without permission. Never pose with back to Buddha statue."
+        },
+        {
+          "title": "Clockwise Walk",
+          "content": "Walk clockwise around stupas and religious monuments."
+        },
+        {
+          "title": "Be Respectful",
+          "content": "No public displays of affection. Speak quietly. Don't point feet at Buddha images."
+        }
+      ]
+    },
+    {
+      "category": "Food & Dining",
+      "rules": [
+        {
+          "title": "Eating with Hands",
+          "content": "Sri Lankans eat rice and curry with right hand. Left hand is considered unclean."
+        },
+        {
+          "title": "Wash Hands",
+          "content": "Wash hands before eating. Most restaurants have wash basins."
+        },
+        {
+          "title": "Feet Position",
+          "content": "Never point feet at food or people while sitting."
+        },
+        {
+          "title": "Try Local Food",
+          "content": "Rice and curry, hoppers, kottu roti, string hoppers. Ask for mild spice if sensitive."
+        }
+      ]
+    },
+    {
+      "category": "Photography",
+      "rules": [
+        {
+          "title": "Ask Permission",
+          "content": "Always ask before photographing people, especially in rural areas."
+        },
+        {
+          "title": "Military & Police",
+          "content": "Don't photograph military installations, checkpoints, or security personnel."
+        },
+        {
+          "title": "Religious Sites",
+          "content": "Some temples prohibit photography. Look for signs or ask."
+        },
+        {
+          "title": "Wildlife",
+          "content": "No flash photography near animals. Can disturb them."
+        }
+      ]
+    },
+    {
+      "category": "Social Customs",
+      "rules": [
+        {
+          "title": "Greetings",
+          "content": "Handshakes common. Ayubowan (ah-yu-bo-wan) means hello/goodbye with hands together."
+        },
+        {
+          "title": "Head & Feet",
+          "content": "Head is sacred, feet are lowest. Never touch someone's head or point feet at people."
+        },
+        {
+          "title": "Bargaining",
+          "content": "Expected at markets and with tuk-tuk drivers. Not in fixed-price shops."
+        },
+        {
+          "title": "Public Affection",
+          "content": "Holding hands okay. Kissing/hugging in public frowned upon."
+        }
+      ]
+    }
+  ],
+  "useful_phrases": {
+    "sinhala": [
+      {"english": "Hello / Goodbye", "sinhala": "Ayubowan", "pronunciation": "ah-yu-bo-wan"},
+      {"english": "Thank you", "sinhala": "Bohoma sthuthi", "pronunciation": "bo-ho-ma stu-thi"},
+      {"english": "How are you?", "sinhala": "Kohomada?", "pronunciation": "ko-ho-ma-da"},
+      {"english": "I'm fine", "sinhala": "Honda", "pronunciation": "hon-da"},
+      {"english": "Yes", "sinhala": "Ow", "pronunciation": "oh"},
+      {"english": "No", "sinhala": "Nehe", "pronunciation": "neh-heh"},
+      {"english": "Please", "sinhala": "Karunakarala", "pronunciation": "ka-ru-na-ka-ra-la"},
+      {"english": "Excuse me", "sinhala": "Samavenna", "pronunciation": "sa-ma-ven-na"},
+      {"english": "How much?", "sinhala": "Kiyada?", "pronunciation": "kee-ya-da"},
+      {"english": "Too expensive", "sinhala": "Bohoma ganan", "pronunciation": "bo-ho-ma ga-nan"}
+    ],
+    "tamil": [
+      {"english": "Hello", "tamil": "Vanakkam", "pronunciation": "va-nak-kam"},
+      {"english": "Thank you", "tamil": "Nandri", "pronunciation": "nan-dri"},
+      {"english": "How are you?", "tamil": "Eppadi irukkirirkal?", "pronunciation": "ep-pa-di i-ruk-ki-reer-kal"},
+      {"english": "I'm fine", "tamil": "Nalla irukiren", "pronunciation": "nal-la i-ru-ki-ren"},
+      {"english": "Yes", "tamil": "Aam", "pronunciation": "aam"},
+      {"english": "No", "tamil": "Illai", "pronunciation": "il-lai"},
+      {"english": "Please", "tamil": "Thayavu seithu", "pronunciation": "tha-ya-vu sei-thu"},
+      {"english": "How much?", "tamil": "Evvalavu?", "pronunciation": "ev-va-la-vu"}
+    ]
+  }
+}
