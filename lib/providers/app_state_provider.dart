@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/achievement_service.dart';
 import '../services/user_data_service.dart';
 import '../utils/constants.dart';
 
@@ -32,6 +33,7 @@ class AppStateProvider with ChangeNotifier {
 
   // Services
   final UserDataService _userDataService = UserDataService();
+  final AchievementService _achievementService = AchievementService();
 
   // Getters
   Locale get currentLocale => _currentLocale;
@@ -72,6 +74,20 @@ class AppStateProvider with ChangeNotifier {
 
       // Load favorites from database
       _favoriteIds = (await _userDataService.getFavoriteIds()).toSet();
+
+      // Update daily streak for gamification
+      try {
+        await _achievementService.initializeAchievements();
+        await _achievementService.updateDailyStreak();
+
+        // Update favorites achievement
+        await _achievementService.updateAchievementProgress(
+          'favorites_collector',
+          _favoriteIds.length,
+        );
+      } catch (e) {
+        print('✗ Error updating streak: $e');
+      }
 
       print('✓ App state initialized: locale=$languageCode, premium=$_isPremium, favorites=${_favoriteIds.length}');
 
@@ -154,6 +170,13 @@ class AppStateProvider with ChangeNotifier {
     try {
       await _userDataService.addFavorite(attractionId);
       _favoriteIds.add(attractionId);
+
+      // Update favorites achievement
+      await _achievementService.updateAchievementProgress(
+        'favorites_collector',
+        _favoriteIds.length,
+      );
+
       print('✓ Added favorite: $attractionId');
       notifyListeners();
     } catch (e) {

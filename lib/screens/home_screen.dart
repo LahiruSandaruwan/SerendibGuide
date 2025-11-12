@@ -10,6 +10,7 @@ import '../widgets/category_chip.dart';
 import '../widgets/ad_banner_widget.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_widget.dart';
+import 'achievements_screen.dart';
 import 'attraction_detail_screen.dart';
 import 'budget_calculator_screen.dart';
 import 'currency_converter_screen.dart';
@@ -21,6 +22,7 @@ import 'map_screen.dart';
 import 'premium_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
+import 'stats_dashboard_screen.dart';
 import 'trip_planner_screen.dart';
 import 'tuktuk_fare_estimator_screen.dart';
 
@@ -235,6 +237,48 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+              const Divider(),
+              // Gamification section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'YOUR PROGRESS',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.bar_chart, color: AppConstants.tropicalGreen),
+                title: const Text('My Stats'),
+                subtitle: const Text('View your progress'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StatsDashboardScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.emoji_events, color: AppConstants.premiumGold),
+                title: const Text('Achievements'),
+                subtitle: const Text('Unlock badges'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AchievementsScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
               ListTile(
                 leading: const Icon(Icons.info),
                 title: const Text('Travel Information'),
