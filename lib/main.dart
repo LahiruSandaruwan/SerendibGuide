@@ -8,15 +8,8 @@ import 'services/admob_service.dart';
 import 'services/purchase_service.dart';
 import 'utils/constants.dart';
 
-// Import screens (will be created)
-// import 'screens/home_screen.dart';
-// import 'screens/attraction_detail_screen.dart';
-// import 'screens/map_screen.dart';
-// import 'screens/favorites_screen.dart';
-// import 'screens/trip_planner_screen.dart';
-// import 'screens/info_screen.dart';
-// import 'screens/settings_screen.dart';
-// import 'screens/premium_screen.dart';
+// Import screens
+import 'screens/home_screen.dart';
 
 /// Main entry point for Serendib Guide app
 Future<void> main() async {
@@ -81,8 +74,7 @@ class SerendibGuideApp extends StatelessWidget {
             ],
 
             // Routes
-            home: const SplashScreen(), // Temporary splash screen
-            // home: const HomeScreen(), // TODO: Uncomment when HomeScreen is created
+            home: const HomeScreen(),
 
             // Named Routes
             // routes: {
@@ -190,54 +182,6 @@ class SerendibGuideApp extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 2,
         centerTitle: false,
-      ),
-    );
-  }
-}
-
-/// Temporary splash screen until HomeScreen is created
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppConstants.deepOceanBlue,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Placeholder for app logo
-            Icon(
-              Icons.explore,
-              size: 120,
-              color: Colors.white.withOpacity(0.9),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              AppConstants.appName,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: 'Roboto',
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              AppConstants.appTagline,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-                fontFamily: 'Roboto',
-              ),
-            ),
-            const SizedBox(height: 48),
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ],
-        ),
       ),
     );
   }
