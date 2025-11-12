@@ -1,0 +1,228 @@
+import 'dart:math';
+import '../utils/helpers.dart';
+
+/// Immutable data model for Sri Lankan attractions
+class Attraction {
+  final int? id;
+  final String nameEn;
+  final String? nameSi;
+  final String? nameTa;
+  final String category;
+  final String province;
+  final String descriptionEn;
+  final String? descriptionSi;
+  final String? descriptionTa;
+  final double latitude;
+  final double longitude;
+  final String? entryFee;
+  final String? openingHours;
+  final String? bestTime;
+  final String? duration;
+  final String? difficulty;
+  final List<String> tags;
+  final List<String> images;
+  final bool isPremium;
+  final String? createdAt;
+  final String? updatedAt;
+
+  const Attraction({
+    this.id,
+    required this.nameEn,
+    this.nameSi,
+    this.nameTa,
+    required this.category,
+    required this.province,
+    required this.descriptionEn,
+    this.descriptionSi,
+    this.descriptionTa,
+    required this.latitude,
+    required this.longitude,
+    this.entryFee,
+    this.openingHours,
+    this.bestTime,
+    this.duration,
+    this.difficulty,
+    required this.tags,
+    required this.images,
+    this.isPremium = false,
+    this.createdAt,
+    this.updatedAt,
+  })  : assert(nameEn != '', 'Name in English cannot be empty'),
+        assert(latitude >= -90 && latitude <= 90, 'Invalid latitude'),
+        assert(longitude >= -180 && longitude <= 180, 'Invalid longitude'),
+        assert(images.length == 4, 'Each attraction must have exactly 4 images');
+
+  /// Get name based on current locale
+  String getName(String locale) {
+    switch (locale) {
+      case 'si':
+        return nameSi ?? nameEn;
+      case 'ta':
+        return nameTa ?? nameEn;
+      case 'en':
+      default:
+        return nameEn;
+    }
+  }
+
+  /// Get description based on current locale
+  String getDescription(String locale) {
+    switch (locale) {
+      case 'si':
+        return descriptionSi ?? descriptionEn;
+      case 'ta':
+        return descriptionTa ?? descriptionEn;
+      case 'en':
+      default:
+        return descriptionEn;
+    }
+  }
+
+  /// Calculate distance from this attraction to given coordinates using Haversine formula
+  double distanceFrom(double lat, double lng) {
+    return Helpers.calculateDistance(latitude, longitude, lat, lng);
+  }
+
+  /// Get first image path
+  String get firstImage => images.isNotEmpty ? images[0] : '';
+
+  /// Get full image path for assets
+  String getImagePath(int index) {
+    if (index >= 0 && index < images.length) {
+      return 'assets/images/attractions/${images[index]}';
+    }
+    return 'assets/images/illustrations/placeholder.png';
+  }
+
+  /// Get all image paths for assets
+  List<String> get imagePaths {
+    return images.map((img) => 'assets/images/attractions/$img').toList();
+  }
+
+  /// Check if attraction has valid coordinates
+  bool get hasValidCoordinates {
+    return Helpers.isValidLatitude(latitude) && Helpers.isValidLongitude(longitude);
+  }
+
+  /// Check if entry is free
+  bool get isFree {
+    return entryFee?.toLowerCase().contains('free') ?? false;
+  }
+
+  /// Factory constructor to create Attraction from JSON/Map
+  factory Attraction.fromJson(Map<String, dynamic> json) {
+    return Attraction(
+      id: json['id'] as int?,
+      nameEn: json['name_en'] as String? ?? '',
+      nameSi: json['name_si'] as String?,
+      nameTa: json['name_ta'] as String?,
+      category: json['category'] as String? ?? '',
+      province: json['province'] as String? ?? '',
+      descriptionEn: json['description_en'] as String? ?? '',
+      descriptionSi: json['description_si'] as String?,
+      descriptionTa: json['description_ta'] as String?,
+      latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
+      longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+      entryFee: json['entry_fee'] as String?,
+      openingHours: json['opening_hours'] as String?,
+      bestTime: json['best_time'] as String?,
+      duration: json['duration'] as String?,
+      difficulty: json['difficulty'] as String?,
+      tags: Helpers.parseCommaSeparated(json['tags'] as String?),
+      images: Helpers.parseCommaSeparated(json['images'] as String?),
+      isPremium: (json['is_premium'] as int?) == 1,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+    );
+  }
+
+  /// Convert Attraction to JSON/Map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name_en': nameEn,
+      'name_si': nameSi,
+      'name_ta': nameTa,
+      'category': category,
+      'province': province,
+      'description_en': descriptionEn,
+      'description_si': descriptionSi,
+      'description_ta': descriptionTa,
+      'latitude': latitude,
+      'longitude': longitude,
+      'entry_fee': entryFee,
+      'opening_hours': openingHours,
+      'best_time': bestTime,
+      'duration': duration,
+      'difficulty': difficulty,
+      'tags': Helpers.joinCommaSeparated(tags),
+      'images': Helpers.joinCommaSeparated(images),
+      'is_premium': isPremium ? 1 : 0,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+
+  /// Create a copy with modified fields
+  Attraction copyWith({
+    int? id,
+    String? nameEn,
+    String? nameSi,
+    String? nameTa,
+    String? category,
+    String? province,
+    String? descriptionEn,
+    String? descriptionSi,
+    String? descriptionTa,
+    double? latitude,
+    double? longitude,
+    String? entryFee,
+    String? openingHours,
+    String? bestTime,
+    String? duration,
+    String? difficulty,
+    List<String>? tags,
+    List<String>? images,
+    bool? isPremium,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return Attraction(
+      id: id ?? this.id,
+      nameEn: nameEn ?? this.nameEn,
+      nameSi: nameSi ?? this.nameSi,
+      nameTa: nameTa ?? this.nameTa,
+      category: category ?? this.category,
+      province: province ?? this.province,
+      descriptionEn: descriptionEn ?? this.descriptionEn,
+      descriptionSi: descriptionSi ?? this.descriptionSi,
+      descriptionTa: descriptionTa ?? this.descriptionTa,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      entryFee: entryFee ?? this.entryFee,
+      openingHours: openingHours ?? this.openingHours,
+      bestTime: bestTime ?? this.bestTime,
+      duration: duration ?? this.duration,
+      difficulty: difficulty ?? this.difficulty,
+      tags: tags ?? this.tags,
+      images: images ?? this.images,
+      isPremium: isPremium ?? this.isPremium,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Attraction && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() {
+    return 'Attraction(id: $id, nameEn: $nameEn, category: $category, province: $province, isPremium: $isPremium)';
+  }
+}
