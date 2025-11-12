@@ -25,12 +25,15 @@ import 'info_screen.dart';
 import 'itinerary_generator_screen.dart';
 import 'map_screen.dart';
 import 'phrasebook_screen.dart';
+import 'photo_spots_screen.dart';
 import 'premium_screen.dart';
 import 'route_optimizer_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'stats_dashboard_screen.dart';
+import 'travel_journal_screen.dart';
 import 'trip_planner_screen.dart';
+import 'trip_timeline_screen.dart';
 import 'tuktuk_fare_estimator_screen.dart';
 
 /// Home screen with category filters and attraction list
@@ -503,6 +506,61 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const BestTimeAdvisorScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Memories section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'MEMORIES',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: AppConstants.sunsetOrange),
+                title: const Text('Photo Spots'),
+                subtitle: const Text('Best photography locations'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PhotoSpotsScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.book, color: AppConstants.tropicalGreen),
+                title: const Text('Travel Journal'),
+                subtitle: const Text('Record your experiences'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TravelJournalScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.timeline, color: AppConstants.deepOceanBlue),
+                title: const Text('Trip Timeline'),
+                subtitle: const Text('Visualize your journey'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TripTimelineScreen(),
                     ),
                   );
                 },

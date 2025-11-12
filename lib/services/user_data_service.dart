@@ -439,6 +439,151 @@ class UserDataService {
     }
   }
 
+  // ==================== JOURNAL OPERATIONS ====================
+
+  /// Initialize journal table if it doesn't exist
+  Future<void> _ensureJournalTable() async {
+    final Database db = await database;
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS journal_entries (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        attraction_id INTEGER,
+        attraction_name TEXT NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        visit_date TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        rating INTEGER DEFAULT 0,
+        photo_path TEXT,
+        tags TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_journal_visit_date ON journal_entries(visit_date DESC)
+    ''');
+  }
+
+  /// Add journal entry
+  Future<int> addJournalEntry({
+    int? attractionId,
+    required String attractionName,
+    required String title,
+    required String content,
+    required DateTime visitDate,
+    int rating = 0,
+    String? photoPath,
+    List<String> tags = const [],
+  }) async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      final int id = await db.insert('journal_entries', {
+        'attraction_id': attractionId,
+        'attraction_name': attractionName,
+        'title': title,
+        'content': content,
+        'visit_date': visitDate.toIso8601String(),
+        'created_at': DateTime.now().toIso8601String(),
+        'rating': rating,
+        'photo_path': photoPath,
+        'tags': tags.join(','),
+      });
+      print('✓ Added journal entry: $title (ID: $id)');
+      return id;
+    } catch (e) {
+      print('✗ Error adding journal entry: $e');
+      rethrow;
+    }
+  }
+
+  /// Get all journal entries
+  Future<List<Map<String, dynamic>>> getJournalEntries() async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      return await db.query('journal_entries', orderBy: 'visit_date DESC');
+    } catch (e) {
+      print('✗ Error fetching journal entries: $e');
+      return [];
+    }
+  }
+
+  /// Get journal entry by ID
+  Future<Map<String, dynamic>?> getJournalEntry(int id) async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      final result = await db.query(
+        'journal_entries',
+        where: 'id = ?',
+        whereArgs: [id],
+        limit: 1,
+      );
+      return result.isEmpty ? null : result.first;
+    } catch (e) {
+      print('✗ Error fetching journal entry: $e');
+      return null;
+    }
+  }
+
+  /// Update journal entry
+  Future<void> updateJournalEntry(int id, Map<String, dynamic> updates) async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      await db.update(
+        'journal_entries',
+        updates,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print('✓ Updated journal entry $id');
+    } catch (e) {
+      print('✗ Error updating journal entry: $e');
+    }
+  }
+
+  /// Delete journal entry
+  Future<void> deleteJournalEntry(int id) async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      await db.delete('journal_entries', where: 'id = ?', whereArgs: [id]);
+      print('✓ Deleted journal entry $id');
+    } catch (e) {
+      print('✗ Error deleting journal entry: $e');
+    }
+  }
+
+  /// Get journal entries by attraction
+  Future<List<Map<String, dynamic>>> getJournalEntriesByAttraction(int attractionId) async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      return await db.query(
+        'journal_entries',
+        where: 'attraction_id = ?',
+        whereArgs: [attractionId],
+        orderBy: 'visit_date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching journal entries by attraction: $e');
+      return [];
+    }
+  }
+
+  /// Clear all journal entries
+  Future<void> clearAllJournalEntries() async {
+    try {
+      await _ensureJournalTable();
+      final Database db = await database;
+      await db.delete('journal_entries');
+      print('✓ Cleared all journal entries');
+    } catch (e) {
+      print('✗ Error clearing journal entries: $e');
+    }
+  }
+
   // ==================== UTILITY OPERATIONS ====================
 
   /// Get user data database size
