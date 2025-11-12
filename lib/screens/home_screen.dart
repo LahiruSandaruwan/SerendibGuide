@@ -11,6 +11,13 @@ import '../widgets/ad_banner_widget.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_widget.dart';
 import 'attraction_detail_screen.dart';
+import 'favorites_screen.dart';
+import 'info_screen.dart';
+import 'map_screen.dart';
+import 'premium_screen.dart';
+import 'search_screen.dart';
+import 'settings_screen.dart';
+import 'trip_planner_screen.dart';
 
 /// Home screen with category filters and attraction list
 class HomeScreen extends StatefulWidget {
@@ -107,18 +114,20 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // TODO: Implement search
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Search coming soon!')),
+              showSearch(
+                context: context,
+                delegate: AttractionSearchDelegate(),
               );
             },
           ),
           IconButton(
             icon: const Icon(Icons.map),
             onPressed: () {
-              // TODO: Navigate to map screen
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Map coming soon!')),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MapScreen(),
+                ),
               );
             },
           ),
@@ -200,9 +209,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 subtitle: Text('${appState.favoriteIds.length} saved'),
                 onTap: () {
                   Navigator.pop(context);
-                  // TODO: Navigate to favorites
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Favorites coming soon!')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FavoritesScreen(),
+                    ),
                   );
                 },
               ),
@@ -211,31 +222,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('My Trips'),
                 onTap: () {
                   Navigator.pop(context);
-                  // TODO: Navigate to trips
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Trips coming soon!')),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.train),
-                title: const Text('Train Routes'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // TODO: Navigate to info screen
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Travel info coming soon!')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TripPlannerScreen(),
+                    ),
                   );
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.info),
                 title: const Text('Travel Information'),
+                subtitle: const Text('Trains, buses, emergency'),
                 onTap: () {
                   Navigator.pop(context);
-                  // TODO: Navigate to info screen
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Travel info coming soon!')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const InfoScreen(),
+                    ),
                   );
                 },
               ),
@@ -247,9 +252,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: const Text('Unlock all features'),
                   onTap: () {
                     Navigator.pop(context);
-                    // TODO: Navigate to premium screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Premium upgrade coming soon!')),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PremiumScreen(),
+                      ),
                     );
                   },
                 ),
@@ -258,9 +265,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Settings'),
                 onTap: () {
                   Navigator.pop(context);
-                  // TODO: Navigate to settings
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Settings coming soon!')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
                   );
                 },
               ),

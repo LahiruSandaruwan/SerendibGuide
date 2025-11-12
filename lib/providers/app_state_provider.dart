@@ -24,6 +24,9 @@ class AppStateProvider with ChangeNotifier {
   // Theme
   bool _isDarkMode = false;
 
+  // Maps
+  bool _useOfflineMaps = false;
+
   // Loading state
   bool _isLoading = false;
 
@@ -39,6 +42,7 @@ class AppStateProvider with ChangeNotifier {
   Set<int> get favoriteIds => _favoriteIds;
   int get adImpressionCount => _adImpressionCount;
   bool get isDarkMode => _isDarkMode;
+  bool get useOfflineMaps => _useOfflineMaps;
   bool get isLoading => _isLoading;
 
   /// Initialize app state from SharedPreferences and database
@@ -62,6 +66,9 @@ class AppStateProvider with ChangeNotifier {
 
       // Load dark mode preference
       _isDarkMode = prefs.getBool(AppConstants.keyIsDarkMode) ?? false;
+
+      // Load offline maps preference
+      _useOfflineMaps = prefs.getBool(AppConstants.keyUseOfflineMaps) ?? false;
 
       // Load favorites from database
       _favoriteIds = (await _userDataService.getFavoriteIds()).toSet();
@@ -258,6 +265,33 @@ class AppStateProvider with ChangeNotifier {
     }
   }
 
+  // ==================== MAPS MANAGEMENT ====================
+
+  /// Toggle offline maps
+  Future<void> toggleOfflineMaps() async {
+    try {
+      _useOfflineMaps = !_useOfflineMaps;
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(AppConstants.keyUseOfflineMaps, _useOfflineMaps);
+      print('✓ Offline maps: $_useOfflineMaps');
+      notifyListeners();
+    } catch (e) {
+      print('✗ Error toggling offline maps: $e');
+    }
+  }
+
+  /// Set offline maps
+  Future<void> setOfflineMaps(bool useOffline) async {
+    try {
+      _useOfflineMaps = useOffline;
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(AppConstants.keyUseOfflineMaps, useOffline);
+      notifyListeners();
+    } catch (e) {
+      print('✗ Error setting offline maps: $e');
+    }
+  }
+
   // ==================== UTILITY METHODS ====================
 
   /// Set loading state
@@ -292,6 +326,7 @@ class AppStateProvider with ChangeNotifier {
       _favoriteIds.clear();
       _adImpressionCount = 0;
       _isDarkMode = false;
+      _useOfflineMaps = false;
 
       print('✓ App state reset');
       notifyListeners();

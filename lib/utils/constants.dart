@@ -19,6 +19,10 @@ class AppConstants {
   static const Color warningAmber = Color(0xFFFFA000);
   static const Color successGreen = Color(0xFF388E3C);
   static const Color premiumGold = Color(0xFFFFD700);
+  static const Color ancientBrown = Color(0xFF5D4037);
+  static const Color mountainGreen = Color(0xFF388E3C);
+  static const Color spiceYellow = Color(0xFFFDD835);
+  static const Color skyBlue = Color(0xFF0288D1);
 
   // Spacing & Dimensions
   static const double spacing4 = 4.0;
@@ -142,6 +146,7 @@ class AppConstants {
   static const String keyIsPremium = 'is_premium';
   static const String keyAdImpressionCount = 'ad_impression_count';
   static const String keyIsDarkMode = 'is_dark_mode';
+  static const String keyUseOfflineMaps = 'use_offline_maps';
   static const String keyRecentSearches = 'recent_searches';
   static const String keyFirstLaunch = 'first_launch';
 
