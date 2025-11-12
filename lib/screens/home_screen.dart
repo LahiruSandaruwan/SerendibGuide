@@ -14,11 +14,15 @@ import 'achievements_screen.dart';
 import 'attraction_detail_screen.dart';
 import 'budget_calculator_screen.dart';
 import 'currency_converter_screen.dart';
+import 'etiquette_guide_screen.dart';
 import 'expense_tracker_screen.dart';
 import 'favorites_screen.dart';
+import 'festival_calendar_screen.dart';
+import 'food_dictionary_screen.dart';
 import 'golden_hour_calculator_screen.dart';
 import 'info_screen.dart';
 import 'map_screen.dart';
+import 'phrasebook_screen.dart';
 import 'premium_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
@@ -372,6 +376,75 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const GoldenHourCalculatorScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Cultural section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'CULTURAL GUIDE',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.translate, color: AppConstants.deepOceanBlue),
+                title: const Text('Phrasebook'),
+                subtitle: const Text('Sinhala & Tamil phrases'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PhrasebookScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.restaurant_menu, color: AppConstants.tropicalGreen),
+                title: const Text('Food Dictionary'),
+                subtitle: const Text('Sri Lankan dishes'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FoodDictionaryScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.diversity_3, color: AppConstants.sunsetOrange),
+                title: const Text('Etiquette Guide'),
+                subtitle: const Text('Cultural do\'s & don\'ts'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EtiquetteGuideScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.celebration, color: AppConstants.premiumGold),
+                title: const Text('Festival Calendar'),
+                subtitle: const Text('Holidays & celebrations'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FestivalCalendarScreen(),
                     ),
                   );
                 },
