@@ -584,6 +584,393 @@ class UserDataService {
     }
   }
 
+  // ==================== USER REVIEWS OPERATIONS ====================
+
+  /// Initialize user reviews table if it doesn't exist
+  Future<void> _ensureReviewsTable() async {
+    final Database db = await database;
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS user_reviews (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        attraction_id INTEGER NOT NULL,
+        attraction_name TEXT NOT NULL,
+        user_name TEXT NOT NULL,
+        rating INTEGER NOT NULL,
+        review_text TEXT NOT NULL,
+        visit_date TEXT NOT NULL,
+        posted_date TEXT NOT NULL,
+        helpful_count INTEGER DEFAULT 0,
+        photo_paths TEXT,
+        user_country TEXT,
+        category TEXT DEFAULT 'general'
+      )
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_review_attraction ON user_reviews(attraction_id)
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_review_posted ON user_reviews(posted_date DESC)
+    ''');
+  }
+
+  /// Add a user review
+  Future<int> addReview({
+    required int attractionId,
+    required String attractionName,
+    required String userName,
+    required int rating,
+    required String reviewText,
+    required DateTime visitDate,
+    List<String> photoPaths = const [],
+    String? userCountry,
+    String category = 'general',
+  }) async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      final int id = await db.insert('user_reviews', {
+        'attraction_id': attractionId,
+        'attraction_name': attractionName,
+        'user_name': userName,
+        'rating': rating,
+        'review_text': reviewText,
+        'visit_date': visitDate.toIso8601String(),
+        'posted_date': DateTime.now().toIso8601String(),
+        'helpful_count': 0,
+        'photo_paths': photoPaths.join(','),
+        'user_country': userCountry,
+        'category': category,
+      });
+      print('✓ Added review for $attractionName (ID: $id)');
+      return id;
+    } catch (e) {
+      print('✗ Error adding review: $e');
+      rethrow;
+    }
+  }
+
+  /// Get all reviews for an attraction
+  Future<List<Map<String, dynamic>>> getReviewsByAttraction(int attractionId) async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      return await db.query(
+        'user_reviews',
+        where: 'attraction_id = ?',
+        whereArgs: [attractionId],
+        orderBy: 'posted_date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching reviews: $e');
+      return [];
+    }
+  }
+
+  /// Get all reviews
+  Future<List<Map<String, dynamic>>> getAllReviews() async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      return await db.query('user_reviews', orderBy: 'posted_date DESC');
+    } catch (e) {
+      print('✗ Error fetching all reviews: $e');
+      return [];
+    }
+  }
+
+  /// Mark review as helpful
+  Future<void> markReviewHelpful(int reviewId) async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      await db.rawUpdate(
+        'UPDATE user_reviews SET helpful_count = helpful_count + 1 WHERE id = ?',
+        [reviewId],
+      );
+      print('✓ Marked review $reviewId as helpful');
+    } catch (e) {
+      print('✗ Error marking review helpful: $e');
+    }
+  }
+
+  /// Delete a review
+  Future<void> deleteReview(int reviewId) async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      await db.delete('user_reviews', where: 'id = ?', whereArgs: [reviewId]);
+      print('✓ Deleted review $reviewId');
+    } catch (e) {
+      print('✗ Error deleting review: $e');
+    }
+  }
+
+  /// Get average rating for an attraction
+  Future<double> getAverageRating(int attractionId) async {
+    try {
+      await _ensureReviewsTable();
+      final Database db = await database;
+      final result = await db.rawQuery(
+        'SELECT AVG(rating) as avg_rating FROM user_reviews WHERE attraction_id = ?',
+        [attractionId],
+      );
+      if (result.isNotEmpty && result.first['avg_rating'] != null) {
+        return result.first['avg_rating'] as double;
+      }
+      return 0.0;
+    } catch (e) {
+      print('✗ Error calculating average rating: $e');
+      return 0.0;
+    }
+  }
+
+  // ==================== TRAVEL TIPS OPERATIONS ====================
+
+  /// Initialize travel tips table if it doesn't exist
+  Future<void> _ensureTipsTable() async {
+    final Database db = await database;
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS travel_tips (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        attraction_id INTEGER,
+        attraction_name TEXT,
+        user_name TEXT NOT NULL,
+        title TEXT NOT NULL,
+        tip_text TEXT NOT NULL,
+        posted_date TEXT NOT NULL,
+        helpful_count INTEGER DEFAULT 0,
+        category TEXT DEFAULT 'general',
+        tags TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_tip_posted ON travel_tips(posted_date DESC)
+    ''');
+  }
+
+  /// Add a travel tip
+  Future<int> addTravelTip({
+    int? attractionId,
+    String? attractionName,
+    required String userName,
+    required String title,
+    required String tipText,
+    String category = 'general',
+    List<String> tags = const [],
+  }) async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      final int id = await db.insert('travel_tips', {
+        'attraction_id': attractionId,
+        'attraction_name': attractionName,
+        'user_name': userName,
+        'title': title,
+        'tip_text': tipText,
+        'posted_date': DateTime.now().toIso8601String(),
+        'helpful_count': 0,
+        'category': category,
+        'tags': tags.join(','),
+      });
+      print('✓ Added travel tip: $title (ID: $id)');
+      return id;
+    } catch (e) {
+      print('✗ Error adding travel tip: $e');
+      rethrow;
+    }
+  }
+
+  /// Get all travel tips
+  Future<List<Map<String, dynamic>>> getAllTravelTips() async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      return await db.query('travel_tips', orderBy: 'posted_date DESC');
+    } catch (e) {
+      print('✗ Error fetching travel tips: $e');
+      return [];
+    }
+  }
+
+  /// Get travel tips by attraction
+  Future<List<Map<String, dynamic>>> getTipsByAttraction(int attractionId) async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      return await db.query(
+        'travel_tips',
+        where: 'attraction_id = ?',
+        whereArgs: [attractionId],
+        orderBy: 'posted_date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching tips by attraction: $e');
+      return [];
+    }
+  }
+
+  /// Get travel tips by category
+  Future<List<Map<String, dynamic>>> getTipsByCategory(String category) async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      return await db.query(
+        'travel_tips',
+        where: 'category = ?',
+        whereArgs: [category],
+        orderBy: 'helpful_count DESC, posted_date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching tips by category: $e');
+      return [];
+    }
+  }
+
+  /// Mark tip as helpful
+  Future<void> markTipHelpful(int tipId) async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      await db.rawUpdate(
+        'UPDATE travel_tips SET helpful_count = helpful_count + 1 WHERE id = ?',
+        [tipId],
+      );
+      print('✓ Marked tip $tipId as helpful');
+    } catch (e) {
+      print('✗ Error marking tip helpful: $e');
+    }
+  }
+
+  /// Delete a travel tip
+  Future<void> deleteTravelTip(int tipId) async {
+    try {
+      await _ensureTipsTable();
+      final Database db = await database;
+      await db.delete('travel_tips', where: 'id = ?', whereArgs: [tipId]);
+      print('✓ Deleted travel tip $tipId');
+    } catch (e) {
+      print('✗ Error deleting travel tip: $e');
+    }
+  }
+
+  // ==================== COMMUNITY PHOTOS OPERATIONS ====================
+
+  /// Initialize community photos table if it doesn't exist
+  Future<void> _ensureCommunityPhotosTable() async {
+    final Database db = await database;
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS community_photos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        attraction_id INTEGER NOT NULL,
+        attraction_name TEXT NOT NULL,
+        user_name TEXT NOT NULL,
+        photo_path TEXT NOT NULL,
+        caption TEXT,
+        upload_date TEXT NOT NULL,
+        taken_date TEXT,
+        likes_count INTEGER DEFAULT 0,
+        tags TEXT,
+        location TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_photo_attraction ON community_photos(attraction_id)
+    ''');
+    await db.execute('''
+      CREATE INDEX IF NOT EXISTS idx_photo_upload ON community_photos(upload_date DESC)
+    ''');
+  }
+
+  /// Add a community photo
+  Future<int> addCommunityPhoto({
+    required int attractionId,
+    required String attractionName,
+    required String userName,
+    required String photoPath,
+    String? caption,
+    DateTime? takenDate,
+    List<String> tags = const [],
+    String? location,
+  }) async {
+    try {
+      await _ensureCommunityPhotosTable();
+      final Database db = await database;
+      final int id = await db.insert('community_photos', {
+        'attraction_id': attractionId,
+        'attraction_name': attractionName,
+        'user_name': userName,
+        'photo_path': photoPath,
+        'caption': caption,
+        'upload_date': DateTime.now().toIso8601String(),
+        'taken_date': takenDate?.toIso8601String(),
+        'likes_count': 0,
+        'tags': tags.join(','),
+        'location': location,
+      });
+      print('✓ Added community photo for $attractionName (ID: $id)');
+      return id;
+    } catch (e) {
+      print('✗ Error adding community photo: $e');
+      rethrow;
+    }
+  }
+
+  /// Get all community photos
+  Future<List<Map<String, dynamic>>> getAllCommunityPhotos() async {
+    try {
+      await _ensureCommunityPhotosTable();
+      final Database db = await database;
+      return await db.query('community_photos', orderBy: 'upload_date DESC');
+    } catch (e) {
+      print('✗ Error fetching community photos: $e');
+      return [];
+    }
+  }
+
+  /// Get community photos by attraction
+  Future<List<Map<String, dynamic>>> getPhotosByAttraction(int attractionId) async {
+    try {
+      await _ensureCommunityPhotosTable();
+      final Database db = await database;
+      return await db.query(
+        'community_photos',
+        where: 'attraction_id = ?',
+        whereArgs: [attractionId],
+        orderBy: 'upload_date DESC',
+      );
+    } catch (e) {
+      print('✗ Error fetching photos by attraction: $e');
+      return [];
+    }
+  }
+
+  /// Like a community photo
+  Future<void> likeCommunityPhoto(int photoId) async {
+    try {
+      await _ensureCommunityPhotosTable();
+      final Database db = await database;
+      await db.rawUpdate(
+        'UPDATE community_photos SET likes_count = likes_count + 1 WHERE id = ?',
+        [photoId],
+      );
+      print('✓ Liked photo $photoId');
+    } catch (e) {
+      print('✗ Error liking photo: $e');
+    }
+  }
+
+  /// Delete a community photo
+  Future<void> deleteCommunityPhoto(int photoId) async {
+    try {
+      await _ensureCommunityPhotosTable();
+      final Database db = await database;
+      await db.delete('community_photos', where: 'id = ?', whereArgs: [photoId]);
+      print('✓ Deleted community photo $photoId');
+    } catch (e) {
+      print('✗ Error deleting community photo: $e');
+    }
+  }
+
   // ==================== UTILITY OPERATIONS ====================
 
   /// Get user data database size

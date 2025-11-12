@@ -14,6 +14,7 @@ import 'achievements_screen.dart';
 import 'attraction_detail_screen.dart';
 import 'best_time_advisor_screen.dart';
 import 'budget_calculator_screen.dart';
+import 'community_gallery_screen.dart';
 import 'currency_converter_screen.dart';
 import 'etiquette_guide_screen.dart';
 import 'expense_tracker_screen.dart';
@@ -27,11 +28,13 @@ import 'map_screen.dart';
 import 'phrasebook_screen.dart';
 import 'photo_spots_screen.dart';
 import 'premium_screen.dart';
+import 'reviews_screen.dart';
 import 'route_optimizer_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'stats_dashboard_screen.dart';
 import 'travel_journal_screen.dart';
+import 'travel_tips_exchange_screen.dart';
 import 'trip_planner_screen.dart';
 import 'trip_timeline_screen.dart';
 import 'tuktuk_fare_estimator_screen.dart';
@@ -561,6 +564,61 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const TripTimelineScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Community section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'COMMUNITY',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.rate_review, color: AppConstants.tropicalGreen),
+                title: const Text('Reviews'),
+                subtitle: const Text('Share your experiences'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReviewsScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: AppConstants.sunsetOrange),
+                title: const Text('Community Photos'),
+                subtitle: const Text('Browse traveler photos'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CommunityGalleryScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.lightbulb, color: AppConstants.deepOceanBlue),
+                title: const Text('Travel Tips'),
+                subtitle: const Text('Exchange helpful advice'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TravelTipsExchangeScreen(),
                     ),
                   );
                 },
