@@ -37,6 +37,7 @@ import 'route_optimizer_screen.dart';
 import 'safety_travel_guide_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
+import 'sri_lanka_info_screen.dart';
 import 'stats_dashboard_screen.dart';
 import 'travel_journal_screen.dart';
 import 'travel_tips_exchange_screen.dart';
@@ -307,6 +308,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const InfoScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.flag, color: AppConstants.tropicalGreen),
+                title: const Text('About Sri Lanka'),
+                subtitle: const Text('Country facts & travel tips'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SriLankaInfoScreen(),
                     ),
                   );
                 },

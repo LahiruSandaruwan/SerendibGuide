@@ -12,6 +12,7 @@ import '../widgets/attraction_card.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/weather_widget.dart';
 import '../widgets/wikipedia_widget.dart';
+import '../widgets/environmental_info_widget.dart';
 import 'nearby_places_screen.dart';
 import 'currency_converter_screen.dart';
 
@@ -265,6 +266,15 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                     WikipediaWidget(
                       searchTerm: widget.attraction.nameEn,
                       fallbackSearchTerm: widget.attraction.district,
+                    ),
+
+                    const SizedBox(height: AppConstants.spacing16),
+
+                    // Environmental Info Widget (Air Quality & Moon Phase)
+                    EnvironmentalInfoWidget(
+                      latitude: widget.attraction.latitude,
+                      longitude: widget.attraction.longitude,
+                      locationName: widget.attraction.getName(locale),
                     ),
 
                     const SizedBox(height: AppConstants.spacing16),
