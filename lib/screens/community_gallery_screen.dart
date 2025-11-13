@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/community_photo.dart';
 import '../services/user_data_service.dart';
 import '../utils/constants.dart';
+import '../utils/image_helper.dart';
 
 /// Screen for viewing community-shared photos
 class CommunityGalleryScreen extends StatefulWidget {
@@ -146,18 +148,24 @@ class _CommunityGalleryScreenState extends State<CommunityGalleryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Photo placeholder (would be actual image in production)
+            // Photo
             Expanded(
-              child: Container(
-                color: Colors.grey[300],
-                child: Center(
-                  child: Icon(
-                    Icons.photo,
-                    size: 60,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ),
+              child: ImageHelper.getImageFile(photo.photoPath) != null
+                  ? Image.file(
+                      ImageHelper.getImageFile(photo.photoPath)!,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      color: Colors.grey[300],
+                      child: Center(
+                        child: Icon(
+                          Icons.photo,
+                          size: 60,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
             ),
 
             // Photo info
@@ -237,17 +245,24 @@ class _CommunityGalleryScreenState extends State<CommunityGalleryScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Photo
-            Container(
-              height: 300,
-              color: Colors.grey[300],
-              child: Center(
-                child: Icon(
-                  Icons.photo,
-                  size: 100,
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
+            ImageHelper.getImageFile(photo.photoPath) != null
+                ? Image.file(
+                    ImageHelper.getImageFile(photo.photoPath)!,
+                    height: 300,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Container(
+                    height: 300,
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: Icon(
+                        Icons.photo,
+                        size: 100,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ),
 
             // Photo details
             Padding(
@@ -394,6 +409,7 @@ class _AddPhotoDialogState extends State<_AddPhotoDialog> {
   final _captionController = TextEditingController();
   final _tagsController = TextEditingController();
   bool _isSaving = false;
+  File? _selectedImage;
 
   @override
   void dispose() {
@@ -403,8 +419,22 @@ class _AddPhotoDialogState extends State<_AddPhotoDialog> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final image = await ImageHelper.showImageSourceDialog(context);
+    if (image != null) {
+      setState(() => _selectedImage = image);
+    }
+  }
+
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
+
+    if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a photo')),
+      );
+      return;
+    }
 
     setState(() => _isSaving = true);
 
@@ -416,12 +446,18 @@ class _AddPhotoDialogState extends State<_AddPhotoDialog> {
           .where((t) => t.isNotEmpty)
           .toList();
 
-      // In production, you would handle actual photo upload here
+      // Save image to app directory
+      final savedImagePath = await ImageHelper.saveImageToAppDirectory(_selectedImage!);
+
+      if (savedImagePath == null) {
+        throw Exception('Failed to save image');
+      }
+
       await userDataService.addCommunityPhoto(
         attractionId: widget.attractionId,
         attractionName: widget.attractionName,
         userName: _nameController.text,
-        photoPath: 'placeholder_path', // Would be actual photo path
+        photoPath: savedImagePath,
         caption: _captionController.text.isNotEmpty
             ? _captionController.text
             : null,
@@ -470,32 +506,76 @@ class _AddPhotoDialogState extends State<_AddPhotoDialog> {
                 ),
                 const SizedBox(height: 24),
 
-                // Photo upload placeholder
-                Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey[400]!),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_a_photo,
-                            size: 48, color: Colors.grey[600]),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Tap to select photo',
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '(Photo upload coming soon)',
-                          style: TextStyle(fontSize: 11, color: Colors.grey[500]),
-                        ),
-                      ],
+                // Photo upload
+                InkWell(
+                  onTap: _pickImage,
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: _selectedImage != null
+                            ? AppConstants.tropicalGreen
+                            : Colors.grey[400]!,
+                        width: _selectedImage != null ? 2 : 1,
+                      ),
                     ),
+                    child: _selectedImage != null
+                        ? Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(7),
+                                child: Image.file(
+                                  _selectedImage!,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.close, color: Colors.white),
+                                    onPressed: () {
+                                      setState(() => _selectedImage = null);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_a_photo,
+                                    size: 48, color: Colors.grey[600]),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Tap to select photo',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Camera or Gallery',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                   ),
                 ),
 

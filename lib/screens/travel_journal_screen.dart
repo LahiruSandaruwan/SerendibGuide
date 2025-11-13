@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/journal_entry.dart';
 import '../services/user_data_service.dart';
 import '../utils/constants.dart';
+import '../utils/image_helper.dart';
 
 /// Travel journal for recording memories and experiences
 class TravelJournalScreen extends StatefulWidget {
@@ -341,6 +343,8 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
   late DateTime _visitDate;
   int _rating = 0;
   bool _isSaving = false;
+  File? _selectedImage;
+  String? _existingPhotoPath;
 
   @override
   void initState() {
@@ -352,6 +356,7 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
       _tagsController.text = widget.entry!.tags.join(', ');
       _visitDate = widget.entry!.visitDate;
       _rating = widget.entry!.rating;
+      _existingPhotoPath = widget.entry!.photoPath;
     } else {
       _visitDate = DateTime.now();
     }
@@ -364,6 +369,13 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
     _contentController.dispose();
     _tagsController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final image = await ImageHelper.showImageSourceDialog(context);
+    if (image != null) {
+      setState(() => _selectedImage = image);
+    }
   }
 
   Future<void> _save() async {
@@ -379,6 +391,12 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
           .where((t) => t.isNotEmpty)
           .toList();
 
+      // Handle photo
+      String? photoPath = _existingPhotoPath;
+      if (_selectedImage != null) {
+        photoPath = await ImageHelper.saveImageToAppDirectory(_selectedImage!);
+      }
+
       if (widget.entry != null) {
         // Update existing entry
         await userDataService.updateJournalEntry(
@@ -390,6 +408,7 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
             'visit_date': _visitDate.toIso8601String(),
             'rating': _rating,
             'tags': tags.join(','),
+            'photo_path': photoPath,
           },
         );
       } else {
@@ -401,6 +420,7 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
           visitDate: _visitDate,
           rating: _rating,
           tags: tags,
+          photoPath: photoPath,
         );
       }
 
@@ -561,6 +581,108 @@ class _JournalEntryDialogState extends State<_JournalEntryDialog> {
                     prefixIcon: Icon(Icons.tag),
                     hintText: 'e.g., beautiful, historical, must-visit',
                   ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Photo
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Photo (optional)',
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 8),
+                    InkWell(
+                      onTap: _pickImage,
+                      child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: _selectedImage != null || _existingPhotoPath != null
+                                ? AppConstants.tropicalGreen
+                                : Colors.grey[300]!,
+                          ),
+                        ),
+                        child: _selectedImage != null
+                            ? Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.6),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close,
+                                            color: Colors.white, size: 20),
+                                        onPressed: () {
+                                          setState(() => _selectedImage = null);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : _existingPhotoPath != null &&
+                                    ImageHelper.getImageFile(_existingPhotoPath) != null
+                                ? Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(7),
+                                        child: Image.file(
+                                          ImageHelper.getImageFile(_existingPhotoPath)!,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 8,
+                                        right: 8,
+                                        child: TextButton.icon(
+                                          onPressed: _pickImage,
+                                          icon: const Icon(Icons.edit, size: 16),
+                                          label: const Text('Change'),
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Colors.black.withOpacity(0.6),
+                                            foregroundColor: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.add_a_photo,
+                                            size: 40, color: Colors.grey[400]),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Add Photo',
+                                          style: TextStyle(color: Colors.grey[600]),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 24),
