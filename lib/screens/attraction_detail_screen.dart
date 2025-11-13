@@ -10,6 +10,7 @@ import '../utils/helpers.dart';
 import '../widgets/image_gallery_widget.dart';
 import '../widgets/attraction_card.dart';
 import '../widgets/loading_widget.dart';
+import 'nearby_places_screen.dart';
 
 /// Attraction detail screen with full information
 class AttractionDetailScreen extends StatefulWidget {
@@ -217,6 +218,33 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                           ),
                         ),
                       ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Nearby Places Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NearbyPlacesScreen(
+                                latitude: widget.attraction.latitude,
+                                longitude: widget.attraction.longitude,
+                                locationName: widget.attraction.getName(locale),
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.restaurant),
+                        label: const Text('Find Nearby Hotels & Restaurants'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppConstants.sunsetOrange,
+                          side: BorderSide(color: AppConstants.sunsetOrange),
+                        ),
+                      ),
                     ),
 
                     const SizedBox(height: AppConstants.spacing24),
