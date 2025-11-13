@@ -16,20 +16,24 @@ import 'best_time_advisor_screen.dart';
 import 'budget_calculator_screen.dart';
 import 'community_gallery_screen.dart';
 import 'currency_converter_screen.dart';
+import 'emergency_contacts_screen.dart';
 import 'etiquette_guide_screen.dart';
 import 'expense_tracker_screen.dart';
 import 'favorites_screen.dart';
 import 'festival_calendar_screen.dart';
 import 'food_dictionary_screen.dart';
 import 'golden_hour_calculator_screen.dart';
+import 'hospital_finder_screen.dart';
 import 'info_screen.dart';
 import 'itinerary_generator_screen.dart';
 import 'map_screen.dart';
+import 'packing_list_screen.dart';
 import 'phrasebook_screen.dart';
 import 'photo_spots_screen.dart';
 import 'premium_screen.dart';
 import 'reviews_screen.dart';
 import 'route_optimizer_screen.dart';
+import 'safety_travel_guide_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'stats_dashboard_screen.dart';
@@ -619,6 +623,75 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const TravelTipsExchangeScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Travel Essentials section header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Text(
+                  'TRAVEL ESSENTIALS',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.emergency, color: Colors.red),
+                title: const Text('Emergency Contacts'),
+                subtitle: const Text('Police, ambulance, tourist help'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EmergencyContactsScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.local_hospital, color: AppConstants.deepOceanBlue),
+                title: const Text('Hospital Finder'),
+                subtitle: const Text('Medical facilities nearby'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HospitalFinderScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.shield, color: Colors.orange),
+                title: const Text('Safety & Travel Guide'),
+                subtitle: const Text('Embassy, visa, tips & more'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SafetyTravelGuideScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.luggage, color: AppConstants.tropicalGreen),
+                title: const Text('Packing List Generator'),
+                subtitle: const Text('Smart packing for your trip'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PackingListScreen(),
                     ),
                   );
                 },
