@@ -35,8 +35,78 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
     super.dispose();
   }
 
+  Widget _buildPlaceholder() {
+    return Container(
+      color: AppConstants.deepOceanBlue.withOpacity(0.1),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.landscape,
+              size: 80,
+              color: AppConstants.deepOceanBlue.withOpacity(0.3),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Discover Sri Lanka 🌴',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppConstants.deepOceanBlue.withOpacity(0.5),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Photos coming soon',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorPlaceholder() {
+    return Container(
+      color: AppConstants.tropicalGreen.withOpacity(0.1),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo_library,
+              size: 64,
+              color: AppConstants.tropicalGreen.withOpacity(0.3),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Photo will be available soon',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // If no images, show placeholder
+    if (widget.images.isEmpty) {
+      return Container(
+        height: 300,
+        color: Colors.grey[100],
+        child: _buildPlaceholder(),
+      );
+    }
+
     return Container(
       height: 300,
       color: Colors.grey[100],
@@ -55,26 +125,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                   tag: widget.images[index],
                 ),
                 errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.broken_image,
-                            size: 64,
-                            color: Colors.grey[600],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Image not available',
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return _buildErrorPlaceholder();
                 },
               );
             },
@@ -97,41 +148,42 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
             },
           ),
 
-          // Page Indicator
-          Positioned(
-            bottom: 16,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(AppConstants.borderRadius8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    widget.images.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentIndex == index
-                          ? Colors.white
-                          : Colors.white.withOpacity(0.4),
+          // Page Indicator - only show if multiple images
+          if (widget.images.length > 1)
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(AppConstants.borderRadius8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      widget.images.length,
+                      (index) => Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == index
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.4),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
 
           // Fullscreen Button
           Positioned(
@@ -196,6 +248,32 @@ class _FullscreenGalleryState extends State<FullscreenGallery> {
     super.dispose();
   }
 
+  Widget _buildErrorPlaceholder() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.photo_library,
+              size: 80,
+              color: Colors.white38,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Photo not available',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[400],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,6 +300,9 @@ class _FullscreenGalleryState extends State<FullscreenGallery> {
             heroAttributes: PhotoViewHeroAttributes(
               tag: widget.images[index],
             ),
+            errorBuilder: (context, error, stackTrace) {
+              return _buildErrorPlaceholder();
+            },
           );
         },
         onPageChanged: (index) {
