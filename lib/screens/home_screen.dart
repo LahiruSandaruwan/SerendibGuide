@@ -23,6 +23,7 @@ import 'favorites_screen.dart';
 import 'festival_calendar_screen.dart';
 import 'food_dictionary_screen.dart';
 import 'golden_hour_calculator_screen.dart';
+import 'holidays_screen.dart';
 import 'hospital_finder_screen.dart';
 import 'info_screen.dart';
 import 'itinerary_generator_screen.dart';
@@ -416,6 +417,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const PhrasebookScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.calendar_month, color: AppConstants.tropicalGreen),
+                title: const Text('Public Holidays'),
+                subtitle: const Text('Sri Lankan holidays & Poya'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HolidaysScreen(),
                     ),
                   );
                 },
