@@ -45,8 +45,7 @@ class _MapScreenState extends State<MapScreen> {
     try {
       final appState = context.read<AppStateProvider>();
       final attractions = await _databaseService.getAttractions(
-        appState.languageCode,
-        appState.isPremium,
+        includePremium: appState.isPremium,
       );
 
       setState(() {

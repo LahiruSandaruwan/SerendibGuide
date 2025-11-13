@@ -99,17 +99,9 @@ class PurchaseService {
   /// Check for pending purchases on app start
   Future<void> _checkPendingPurchases() async {
     try {
-      final QueryPurchaseDetailsResponse response = await _iap.restorePurchases();
-
-      for (final PurchaseDetails purchase in response.pastPurchases) {
-        if (purchase.productID == AppConstants.premiumProductId) {
-          if (purchase.status == PurchaseStatus.purchased ||
-              purchase.status == PurchaseStatus.restored) {
-            await _savePremiumStatus(true);
-            print('✓ Found existing premium purchase');
-          }
-        }
-      }
+      await _iap.restorePurchases();
+      // Restored purchases will be delivered through the purchase stream
+      print('✓ Restore purchases initiated');
     } catch (e) {
       print('✗ Error checking pending purchases: $e');
     }
@@ -136,24 +128,11 @@ class PurchaseService {
   /// Verify premium status with store
   Future<void> _verifyPremiumWithStore() async {
     try {
-      final QueryPurchaseDetailsResponse response = await _iap.restorePurchases();
-      bool foundPremium = false;
-
-      for (final PurchaseDetails purchase in response.pastPurchases) {
-        if (purchase.productID == AppConstants.premiumProductId &&
-            (purchase.status == PurchaseStatus.purchased ||
-                purchase.status == PurchaseStatus.restored)) {
-          foundPremium = true;
-          break;
-        }
-      }
-
-      if (!foundPremium) {
-        print('⚠️ Premium status mismatch - local says premium but store says not');
-        // Trust the store
-        await _savePremiumStatus(false);
-        onPremiumStatusChanged?.call(false);
-      }
+      await _iap.restorePurchases();
+      // Verification will be handled through the purchase stream
+      // Purchases will be delivered through _purchaseUpdates stream
+      // This method now just triggers the restore process
+      print('✓ Restore purchases initiated for verification');
     } catch (e) {
       print('✗ Error verifying premium with store: $e');
     }

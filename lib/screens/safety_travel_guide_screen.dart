@@ -76,7 +76,7 @@ class SafetyTravelGuideScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const _SIMCardGuideScreen(),
+                  builder: (context) => _SIMCardGuideScreen(),
                 ),
               );
             },
@@ -92,7 +92,7 @@ class SafetyTravelGuideScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const _VisaInfoScreen(),
+                  builder: (context) => _VisaInfoScreen(),
                 ),
               );
             },
@@ -108,7 +108,7 @@ class SafetyTravelGuideScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const _TransportationGuideScreen(),
+                  builder: (context) => _TransportationGuideScreen(),
                 ),
               );
             },
@@ -619,4 +619,33 @@ class _LostDocumentScreen extends StatelessWidget {
   }
 }
 
-// Continued in next message due to length...
+// Placeholder widgets for detailed screens
+class _SIMCardGuideScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('SIM Card & WiFi Guide')),
+      body: Center(child: Text('SIM Card Guide - Coming Soon')),
+    );
+  }
+}
+
+class _VisaInfoScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Visa Information')),
+      body: Center(child: Text('Visa Information - Coming Soon')),
+    );
+  }
+}
+
+class _TransportationGuideScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Transportation Guide')),
+      body: Center(child: Text('Transportation Guide - Coming Soon')),
+    );
+  }
+}

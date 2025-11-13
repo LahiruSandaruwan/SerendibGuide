@@ -591,7 +591,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
 
     // TODO: Implement Share.share(shareText)
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Share trip: $_shareText')),
+      SnackBar(content: Text('Share trip: $shareText')),
     );
   }
 }

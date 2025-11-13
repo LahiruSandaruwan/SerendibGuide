@@ -53,9 +53,9 @@ class DatabaseService {
       }
 
       // Open database in read-only mode
+      // Note: Don't specify version when opening in readOnly mode to avoid write attempts
       return await openDatabase(
         path,
-        version: AppConstants.databaseVersion,
         readOnly: true,
       );
     } catch (e) {

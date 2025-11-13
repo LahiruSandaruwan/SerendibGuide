@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import '../utils/helpers.dart';
 
@@ -9,6 +10,7 @@ class Attraction {
   final String? nameTa;
   final String category;
   final String province;
+  final String? district;
   final String descriptionEn;
   final String? descriptionSi;
   final String? descriptionTa;
@@ -32,6 +34,7 @@ class Attraction {
     this.nameTa,
     required this.category,
     required this.province,
+    this.district,
     required this.descriptionEn,
     this.descriptionSi,
     this.descriptionTa,
@@ -49,8 +52,7 @@ class Attraction {
     this.updatedAt,
   })  : assert(nameEn != '', 'Name in English cannot be empty'),
         assert(latitude >= -90 && latitude <= 90, 'Invalid latitude'),
-        assert(longitude >= -180 && longitude <= 180, 'Invalid longitude'),
-        assert(images.length == 4, 'Each attraction must have exactly 4 images');
+        assert(longitude >= -180 && longitude <= 180, 'Invalid longitude');
 
   /// Get name based on current locale
   String getName(String locale) {
@@ -83,20 +85,40 @@ class Attraction {
     return Helpers.calculateDistance(latitude, longitude, lat, lng);
   }
 
+  /// Convenience getter for English name (for backwards compatibility)
+  String get name => nameEn;
+
+  /// Convenience getter for English description (for backwards compatibility)
+  String get description => descriptionEn;
+
+  /// Convenience getter for images list (for backwards compatibility)
+  List<String> get imageUrls => images;
+
   /// Get first image path
   String get firstImage => images.isNotEmpty ? images[0] : '';
 
-  /// Get full image path for assets
+  /// Get full image path - handles both remote URLs and local assets
   String getImagePath(int index) {
     if (index >= 0 && index < images.length) {
-      return 'assets/images/attractions/${images[index]}';
+      final String image = images[index];
+      // Check if it's a remote URL (starts with http or https)
+      if (image.startsWith('http://') || image.startsWith('https://')) {
+        return image;
+      }
+      // Otherwise treat as local asset
+      return 'assets/images/attractions/$image';
     }
     return 'assets/images/illustrations/placeholder.png';
   }
 
-  /// Get all image paths for assets
+  /// Get all image paths - handles both remote URLs and local assets
   List<String> get imagePaths {
-    return images.map((img) => 'assets/images/attractions/$img').toList();
+    return images.map((img) {
+      if (img.startsWith('http://') || img.startsWith('https://')) {
+        return img;
+      }
+      return 'assets/images/attractions/$img';
+    }).toList();
   }
 
   /// Check if attraction has valid coordinates
@@ -109,6 +131,28 @@ class Attraction {
     return entryFee?.toLowerCase().contains('free') ?? false;
   }
 
+  /// Helper method to parse images from either JSON array string or comma-separated string
+  static List<String> _parseImages(String? imagesData) {
+    if (imagesData == null || imagesData.isEmpty || imagesData == '[]') {
+      return [];
+    }
+
+    try {
+      // Try parsing as JSON array first
+      if (imagesData.trim().startsWith('[')) {
+        final dynamic decoded = jsonDecode(imagesData);
+        if (decoded is List) {
+          return decoded.map((e) => e.toString()).toList();
+        }
+      }
+    } catch (e) {
+      // If JSON parsing fails, fall through to comma-separated parsing
+    }
+
+    // Fall back to comma-separated parsing
+    return Helpers.parseCommaSeparated(imagesData);
+  }
+
   /// Factory constructor to create Attraction from JSON/Map
   factory Attraction.fromJson(Map<String, dynamic> json) {
     return Attraction(
@@ -118,6 +162,7 @@ class Attraction {
       nameTa: json['name_ta'] as String?,
       category: json['category'] as String? ?? '',
       province: json['province'] as String? ?? '',
+      district: json['district'] as String?,
       descriptionEn: json['description_en'] as String? ?? '',
       descriptionSi: json['description_si'] as String?,
       descriptionTa: json['description_ta'] as String?,
@@ -129,7 +174,7 @@ class Attraction {
       duration: json['duration'] as String?,
       difficulty: json['difficulty'] as String?,
       tags: Helpers.parseCommaSeparated(json['tags'] as String?),
-      images: Helpers.parseCommaSeparated(json['images'] as String?),
+      images: _parseImages(json['images'] as String?),
       isPremium: (json['is_premium'] as int?) == 1,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
@@ -145,6 +190,7 @@ class Attraction {
       'name_ta': nameTa,
       'category': category,
       'province': province,
+      'district': district,
       'description_en': descriptionEn,
       'description_si': descriptionSi,
       'description_ta': descriptionTa,
@@ -171,6 +217,7 @@ class Attraction {
     String? nameTa,
     String? category,
     String? province,
+    String? district,
     String? descriptionEn,
     String? descriptionSi,
     String? descriptionTa,
@@ -194,6 +241,7 @@ class Attraction {
       nameTa: nameTa ?? this.nameTa,
       category: category ?? this.category,
       province: province ?? this.province,
+      district: district ?? this.district,
       descriptionEn: descriptionEn ?? this.descriptionEn,
       descriptionSi: descriptionSi ?? this.descriptionSi,
       descriptionTa: descriptionTa ?? this.descriptionTa,

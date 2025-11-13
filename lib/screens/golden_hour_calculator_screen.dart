@@ -320,7 +320,7 @@ class _GoldenHourCalculatorScreenState extends State<GoldenHourCalculatorScreen>
     );
   }
 
-  Widget _buildTimeIndicator(Map<String, DateTime> sunTimes) {
+  Widget _buildTimeIndicator(Map<String, dynamic> sunTimes) {
     final now = DateTime.now();
     final sunrise = sunTimes['sunrise']!;
     final sunset = sunTimes['sunset']!;
@@ -578,7 +578,7 @@ class _GoldenHourCalculatorScreenState extends State<GoldenHourCalculatorScreen>
 
   /// Calculate sun times using simplified astronomical formulas
   /// Based on NOAA solar calculations
-  Map<String, DateTime> _calculateSunTimes(double latitude, double longitude, DateTime date) {
+  Map<String, dynamic> _calculateSunTimes(double latitude, double longitude, DateTime date) {
     // Julian day calculation
     final julianDay = _toJulianDay(date);
     final julianCentury = (julianDay - 2451545.0) / 36525.0;
