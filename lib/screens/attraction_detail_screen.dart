@@ -10,7 +10,9 @@ import '../utils/helpers.dart';
 import '../widgets/image_gallery_widget.dart';
 import '../widgets/attraction_card.dart';
 import '../widgets/loading_widget.dart';
+import '../widgets/weather_widget.dart';
 import 'nearby_places_screen.dart';
+import 'currency_converter_screen.dart';
 
 /// Attraction detail screen with full information
 class AttractionDetailScreen extends StatefulWidget {
@@ -248,6 +250,15 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                     ),
 
                     const SizedBox(height: AppConstants.spacing24),
+
+                    // Weather Widget
+                    WeatherWidget(
+                      latitude: widget.attraction.latitude,
+                      longitude: widget.attraction.longitude,
+                      locationName: widget.attraction.getName(locale),
+                    ),
+
+                    const SizedBox(height: AppConstants.spacing16),
                     const Divider(),
                     const SizedBox(height: AppConstants.spacing16),
 
