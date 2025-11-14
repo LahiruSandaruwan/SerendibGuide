@@ -13,6 +13,7 @@ import '../widgets/loading_widget.dart';
 import '../widgets/weather_widget.dart';
 import '../widgets/wikipedia_widget.dart';
 import '../widgets/environmental_info_widget.dart';
+import '../widgets/qr_code_widget.dart';
 import 'nearby_places_screen.dart';
 import 'currency_converter_screen.dart';
 
@@ -275,6 +276,13 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                       latitude: widget.attraction.latitude,
                       longitude: widget.attraction.longitude,
                       locationName: widget.attraction.getName(locale),
+                    ),
+
+                    const SizedBox(height: AppConstants.spacing16),
+
+                    // QR Code Widget
+                    QRCodeWidget(
+                      attraction: widget.attraction,
                     ),
 
                     const SizedBox(height: AppConstants.spacing16),

@@ -8,6 +8,7 @@ class Weather {
   final double windSpeed;
   final int humidity;
   final double precipitation;
+  final double? uvIndex;
   final String description;
   final String icon;
 
@@ -20,6 +21,7 @@ class Weather {
     required this.windSpeed,
     required this.humidity,
     required this.precipitation,
+    this.uvIndex,
     required this.description,
     required this.icon,
   });
@@ -40,6 +42,7 @@ class Weather {
         windSpeed: (json['windspeed_10m_max'] ?? 0).toDouble(),
         humidity: 0,
         precipitation: (json['precipitation_sum'] ?? 0).toDouble(),
+        uvIndex: (json['uv_index_max'] as num?)?.toDouble(),
         description: desc['description']!,
         icon: desc['icon']!,
       );
@@ -54,6 +57,7 @@ class Weather {
         windSpeed: (json['windspeed'] as num).toDouble(),
         humidity: json['relative_humidity'] ?? 0,
         precipitation: 0,
+        uvIndex: (json['uv_index'] as num?)?.toDouble(),
         description: desc['description']!,
         icon: desc['icon']!,
       );
@@ -129,6 +133,53 @@ class Weather {
     } else {
       return 'Good weather for exploring';
     }
+  }
+
+  /// Get UV index category
+  String get uvCategory {
+    if (uvIndex == null) return 'Unknown';
+    if (uvIndex! <= 2) return 'Low';
+    if (uvIndex! <= 5) return 'Moderate';
+    if (uvIndex! <= 7) return 'High';
+    if (uvIndex! <= 10) return 'Very High';
+    return 'Extreme';
+  }
+
+  /// Get UV index advice
+  String get uvAdvice {
+    if (uvIndex == null) return 'UV data unavailable';
+    if (uvIndex! <= 2) {
+      return 'Minimal sun protection needed';
+    } else if (uvIndex! <= 5) {
+      return 'Wear sunscreen (SPF 30+)';
+    } else if (uvIndex! <= 7) {
+      return 'Sunscreen essential. Seek shade during midday';
+    } else if (uvIndex! <= 10) {
+      return 'Extra protection needed. Avoid sun 10am-4pm';
+    } else {
+      return 'Take all precautions. Minimize sun exposure';
+    }
+  }
+
+  /// Get UV index emoji
+  String get uvEmoji {
+    if (uvIndex == null) return '☀️';
+    if (uvIndex! <= 2) return '🟢';
+    if (uvIndex! <= 5) return '🟡';
+    if (uvIndex! <= 7) return '🟠';
+    if (uvIndex! <= 10) return '🔴';
+    return '🟣';
+  }
+
+  /// Check if precipitation is likely
+  bool get isPrecipitationLikely => precipitation > 1.0;
+
+  /// Get precipitation display
+  String get precipitationDisplay {
+    if (precipitation == 0) return 'No rain';
+    if (precipitation < 2.5) return 'Light rain (${precipitation.toStringAsFixed(1)}mm)';
+    if (precipitation < 10) return 'Moderate rain (${precipitation.toStringAsFixed(1)}mm)';
+    return 'Heavy rain (${precipitation.toStringAsFixed(1)}mm)';
   }
 
   @override

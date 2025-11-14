@@ -16,6 +16,7 @@ import 'best_time_advisor_screen.dart';
 import 'budget_calculator_screen.dart';
 import 'community_gallery_screen.dart';
 import 'currency_converter_screen.dart';
+import 'daily_facts_screen.dart';
 import 'emergency_contacts_screen.dart';
 import 'etiquette_guide_screen.dart';
 import 'expense_tracker_screen.dart';
@@ -44,6 +45,7 @@ import 'travel_tips_exchange_screen.dart';
 import 'trip_planner_screen.dart';
 import 'trip_timeline_screen.dart';
 import 'tuktuk_fare_estimator_screen.dart';
+import 'world_time_screen.dart';
 
 /// Home screen with category filters and attraction list
 class HomeScreen extends StatefulWidget {
@@ -409,6 +411,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.schedule, color: AppConstants.deepOceanBlue),
+                title: const Text('World Time'),
+                subtitle: const Text('Sri Lanka time & converter'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WorldTimeScreen(),
+                    ),
+                  );
+                },
+              ),
               const Divider(),
               // Cultural section header
               Padding(
@@ -446,6 +462,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const HolidaysScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.lightbulb, color: AppConstants.sunsetOrange),
+                title: const Text('Did You Know?'),
+                subtitle: const Text('Sri Lanka facts & travel quotes'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DailyFactsScreen(),
                     ),
                   );
                 },

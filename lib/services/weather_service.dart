@@ -22,8 +22,8 @@ class WeatherService {
         '$_baseUrl'
         '?latitude=$latitude'
         '&longitude=$longitude'
-        '&current=temperature_2m,relative_humidity_2m,weathercode,windspeed_10m'
-        '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max'
+        '&current=temperature_2m,relative_humidity_2m,weathercode,windspeed_10m,uv_index'
+        '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,uv_index_max'
         '&timezone=Asia/Colombo'
         '&forecast_days=7',
       );
@@ -58,6 +58,7 @@ class WeatherService {
           'temperature_2m_min': (dailyData['temperature_2m_min'] as List)[i],
           'precipitation_sum': (dailyData['precipitation_sum'] as List)[i],
           'windspeed_10m_max': (dailyData['windspeed_10m_max'] as List)[i],
+          'uv_index_max': (dailyData['uv_index_max'] as List)[i],
         };
         daily.add(Weather.fromOpenMeteo(dayData, isDaily: true));
       }
@@ -86,7 +87,7 @@ class WeatherService {
         '$_baseUrl'
         '?latitude=$latitude'
         '&longitude=$longitude'
-        '&current=temperature_2m,relative_humidity_2m,weathercode,windspeed_10m'
+        '&current=temperature_2m,relative_humidity_2m,weathercode,windspeed_10m,uv_index'
         '&timezone=Asia/Colombo',
       );
 
