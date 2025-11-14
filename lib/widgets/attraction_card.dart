@@ -190,7 +190,7 @@ class AttractionCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          attraction.province,
+                          attraction.fullLocation,
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 color: Colors.grey[600],
                               ),

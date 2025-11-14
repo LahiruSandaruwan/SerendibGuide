@@ -180,7 +180,7 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                         const SizedBox(width: 8),
                         _buildInfoChip(
                           icon: Icons.location_on,
-                          label: widget.attraction.province,
+                          label: widget.attraction.fullLocation,
                           color: Colors.grey[700]!,
                         ),
                         if (widget.attraction.difficulty != null) ...[

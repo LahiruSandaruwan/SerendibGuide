@@ -80,6 +80,19 @@ class Attraction {
     }
   }
 
+  /// Get complete location (district + province)
+  String get fullLocation {
+    if (district != null && district!.isNotEmpty) {
+      return '$district, $province';
+    }
+    return province;
+  }
+
+  /// Get location with coordinates
+  String get locationWithCoords {
+    return '$fullLocation (${latitude.toStringAsFixed(4)}°, ${longitude.toStringAsFixed(4)}°)';
+  }
+
   /// Calculate distance from this attraction to given coordinates using Haversine formula
   double distanceFrom(double lat, double lng) {
     return Helpers.calculateDistance(latitude, longitude, lat, lng);
