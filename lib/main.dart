@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'providers/app_state_provider.dart';
 import 'services/database_service.dart';
@@ -67,7 +68,7 @@ class SerendibGuideApp extends StatelessWidget {
               Locale('ta'),
             ],
             localizationsDelegates: const [
-              // AppLocalizations.delegate, // TODO: Uncomment when l10n is generated
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
@@ -103,8 +104,7 @@ class SerendibGuideApp extends StatelessWidget {
         secondary: AppConstants.tropicalGreen,
         tertiary: AppConstants.sunsetOrange,
         error: AppConstants.errorRed,
-        background: AppConstants.cleanWhite,
-        surface: Colors.white,
+        surface: AppConstants.cleanWhite,
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w300),

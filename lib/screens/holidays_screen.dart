@@ -142,6 +142,8 @@ class _HolidaysScreenState extends State<HolidaysScreen> with SingleTickerProvid
         date: today,
         name: '',
         localName: '',
+        countryCode: 'LK',
+        fixed: true,
         type: HolidayType.publicHoliday,
       ),
     );
@@ -364,7 +366,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> with SingleTickerProvid
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                holiday.typeDisplay,
+                holiday.type.displayName,
                 style: TextStyle(
                   fontSize: 10,
                   color: _getTypeColor(holiday.type),
@@ -852,6 +854,8 @@ class _HolidaysScreenState extends State<HolidaysScreen> with SingleTickerProvid
         return AppConstants.successGreen;
       case HolidayType.bankHoliday:
         return AppConstants.deepOceanBlue;
+      case HolidayType.religious:
+        return AppConstants.ancientBrown;
       case HolidayType.observance:
         return AppConstants.warningAmber;
     }
@@ -863,6 +867,8 @@ class _HolidaysScreenState extends State<HolidaysScreen> with SingleTickerProvid
         return 'Public Holiday';
       case HolidayType.bankHoliday:
         return 'Bank Holiday';
+      case HolidayType.religious:
+        return 'Religious Day';
       case HolidayType.observance:
         return 'Observance';
     }
